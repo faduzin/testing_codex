@@ -2,14 +2,26 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "cmenos.tab.h"
 
 int contLinha = 1;
+int errosLexicos = 0;
+
+static char *copiarLexema(const char *texto)
+{
+    if (!texto) return NULL;
+    size_t tam = strlen(texto) + 1;
+    char *copia = (char *)malloc(tam);
+    if (!copia) return NULL;
+    memcpy(copia, texto, tam);
+    return copia;
+}
 
 void erroLexico(char *mensagem)
 {
-	printf("ERRO LEXICO: %s LINHA: %d\n", mensagem, contLinha);
-	exit(1);
+    printf("ERRO LÉXICO: %s LINHA: %d\n", mensagem, contLinha);
+    errosLexicos++;
 }
 
 %}
@@ -55,7 +67,7 @@ ESPACO [ \t]+
 }
 
 {ID}  {
-    yylval.sval = strdup(yytext); /* <-- passa o lexema do identificador */
+    yylval.sval = copiarLexema(yytext); /* <-- passa o lexema do identificador */
     return ID;
 }
 
