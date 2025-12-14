@@ -25,6 +25,11 @@ void yyerror(const char *mensagem);
 int yylex(void);
 %}
 
+%code requires {
+#include "ast.h"
+#include "semantico.h"
+}
+
 %output "cmenos.tab.c"
 %defines "cmenos.tab.h"
 %define parse.error verbose
