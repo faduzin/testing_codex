@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "ast.h"
 #include "semantico.h"
+#include "codigo_intermediario.h"
 
 extern FILE *yyin;
 int yyparse(void);
@@ -37,6 +38,10 @@ int main(int argc, char **argv) {
                errosLexicos, errosSintaticos, errosSemanticos);
     } else {
         printf("\nCompilação concluída sem erros.\n");
+        if (arvoreSintatica) {
+            printf("\nCódigo intermediário (três endereços):\n");
+            gerarCodigoIntermediario(arvoreSintatica, stdout);
+        }
     }
 
     limparTabelaSimbolos();
